@@ -1,0 +1,28 @@
+{
+  "name": "lunchtime",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@storybook/cli": "^3.3.13",
+    "github-markdown-css": "^2.10.0",
+    "markdown-jsx-loader": "^3.0.2",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "description": "",
+  "devDependencies": {
+    "@storybook/react": "^3.3.13",
+    "babel-core": "^6.26.0",
+    "raw-loader": "^0.5.1",
+    "react-docgen": "^2.20.1",
+    "react-docgen-displayname-handler": "^1.0.1"
+  }
+}
