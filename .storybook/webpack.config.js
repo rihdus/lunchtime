@@ -1,7 +1,31 @@
 const path = require('path');
-const raw = require('raw-loader');
+const marked = require('marked');
+const mdRenderer = new marked.Renderer();
+const highlightjs = require('highlight.js');
+const htmlencode = require('htmlencode').htmlEncode;
 
 const genDefaultConfig = require('@storybook/react/dist/server/config/defaults/webpack.config.js');
+
+marked.setOptions({
+   highlight: function (code) {
+      return require('highlight.js').highlightAuto(code).value;
+   }
+});
+
+mdRenderer.code = (code, lang, escaped) => {
+   console.log(`\n[${lang}]${escaped}::`, code);
+//    if (!lang) {
+//       return `<pre><code>${escaped ? code : escape(code, true)}
+// </code></pre>`;
+//    }
+
+   const highlightedCode = highlightjs.highlightAuto(code).value;
+
+   return `<div className={'block-playground base16-light'}>
+<Playground codeText={'${code}'} scope={{}} theme="base16-light" />
+<pre>${highlightedCode}</pre>
+</div>`;
+};
 
 const jsxRenderer = (contents, resourcePath, options) => {
    const componentPathTokens = resourcePath.split('/'),
@@ -9,14 +33,19 @@ const jsxRenderer = (contents, resourcePath, options) => {
    const componentPath = componentPathTokens.join('/');
    const componentName = componentPathTokens.pop();
 
-   console.log(`${componentName}:${mdFileName}`, componentPath);
+
+   const playgroundScopeToken = `scope={{React: React, ${componentName}: ${componentName}}} `;
+
+   contents = contents
+      .replace('\n', '')
+      .replace('scope={{}}', playgroundScopeToken);
 
    return `
       import React from 'react';
+      import Playground from 'component-playground';
       import ${componentName} from '${componentPath}';
-      export default (name, components) => {
-         console.log('Rendering ${componentName}'); 
-         return (<div>${contents.replace('\\n', '')}</div>);
+      export default (name, components) => { 
+         return (<div>${contents}</div>);
       }`;
 };
 
@@ -43,13 +72,22 @@ module.exports = (storybookBaseConfig, configType) => {
       {
          loader: 'markdown-jsx-loader',
          options: {
-            // renderer: mdRenderer,
+            renderer: mdRenderer,
             render: jsxRenderer
          }
       }
    ];
 
-   console.log(config.module);
+   config.module.rules.push({
+      test: /\.scss$/,
+      use: [{
+         loader: "style-loader" // creates style nodes from JS strings
+      }, {
+         loader: "css-loader" // translates CSS into CommonJS
+      }, {
+         loader: "sass-loader" // compiles Sass to CSS
+      }]
+   });
    // Return the altered config
    return config;
 };

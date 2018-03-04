@@ -1,21 +1,24 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-// import {
-//    createDummyStory,
-//    transformStoryComponents_JSX,
-//    transformStoryComponents_showdown,
-//    transformStoryComponents_markdownIt,
-//    tr_mdReactJs
-// } from "./autodoc";
+import {
+   createDummyStory,
+   transformStoryComponents_JSX,
+   transformStoryComponents_showdown,
+   transformStoryComponents_markdownIt,
+   tr_mdReactJs
+} from "./autodoc";
 // import { action } from '@storybook/addon-actions';
+import Playground from 'component-playground';
+
+require('./style.scss');
+require('github-markdown-css');
+require('codemirror/lib/codemirror.css');
+require('codemirror/theme/base16-light.css');
 
 const reactDocs = require('react-docgen');
 const req = require.context('raw-loader!../src/components', true, /\.js$/);
 const reqJs = require.context('../src/components', true, /\.js$/);
 const reqMd = require.context('../src/components', true, /\.md$/);
-
-// js-hint
-require('github-markdown-css');
 
 const utils = {
    sourcePath: function sourcePath(sourceFilePath) {
@@ -29,7 +32,6 @@ const utils = {
 };
 
 const requireDocFiles = (path) => {
-   console.log(path);
    return reqMd(`${path}/Readme.md`).default;
 };
 
@@ -51,10 +53,11 @@ let stories = storiesOf('UI Components', module);
 docGen.forEach(parse => {
    const {displayName/*, description*/} = parse.doc;
    const {component, md} = parse;
-   console.log(md);
    stories.add(displayName, () => {
       const StoryDocComponent = md(displayName, {
-         [displayName]: component
+         [displayName]: component,
+         React: React,
+         Playground
       });
 
       // Render markdown with github markdown css.

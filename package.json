@@ -12,10 +12,14 @@
   "dependencies": {
     "@storybook/cli": "^3.3.13",
     "github-markdown-css": "^2.10.0",
+    "htmlencode": "0.0.4",
     "markdown-jsx-loader": "^3.0.2",
+    "marked": "^0.3.17",
+    "node-sass": "^4.7.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "sass-loader": "^6.0.7"
   },
   "description": "",
   "devDependencies": {
