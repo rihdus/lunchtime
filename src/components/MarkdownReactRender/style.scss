@@ -1,0 +1,54 @@
+.mdr {
+
+  $mdr-primary: #7ba5f5;
+  $mdr-primary-light: mix($mdr-primary, #fff, 10%);
+  $mdr-primary-bg: mix($mdr-primary, #fff, 30%);
+
+  $mdr-primary-border: darken($mdr-primary, 0%);
+  $mdr-primary-border-light: darken($mdr-primary-light, 10%);
+
+  &-bock {
+  }
+  &-container {
+    border: 1px solid $mdr-primary-border;
+  }
+  &-header {
+    padding: 2px 5px;
+    background: repeating-linear-gradient(
+        45deg,
+        $mdr-primary-bg,
+        $mdr-primary-bg 10px,
+        darken($mdr-primary-bg, 3%) 10px,
+        darken($mdr-primary-bg, 3%) 20px
+    );
+    border-bottom: 1px solid $mdr-primary-border-light;
+    .mdr-button-group {
+      .mdr-button {
+        //float: right;
+      }
+
+    }
+  }
+
+  &-button-group {
+    overflow: hidden;
+    .mdr-button {
+      float: left;
+    }
+  }
+
+  &-button {
+    padding: 2px 5px;
+    display: inline-block;
+    border: 1px solid #A0A0A0;
+    background: #fff;
+    cursor: pointer;
+    &--header {
+      font-size: 11px;
+    }
+  }
+
+  &-component-render {
+
+  }
+}
