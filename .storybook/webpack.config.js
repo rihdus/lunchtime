@@ -12,19 +12,22 @@ marked.setOptions({
    }
 });
 
-mdRenderer.code = (code, lang, escaped) => {
-   console.log(`\n[${lang}]${escaped}::`, code);
-//    if (!lang) {
-//       return `<pre><code>${escaped ? code : escape(code, true)}
-// </code></pre>`;
-//    }
-
+mdRenderer.code = (code, langStr, escaped) => {
+   /* Highlighted code generated from highlight.js */
    const highlightedCode = highlightjs.highlightAuto(code).value;
 
-   return `<div className={'block-playground base16-light'}>
-<Playground codeText={'${code}'} scope={{}} theme="base16-light" />
-<pre>${highlightedCode}</pre>
+   const match = langStr.match(/(\w+)\((\w+)\)$/)
+   if (match) {
+      const modifier = match[1]
+         , lang = match[2];
+      return modifier === 'playground' && `
+<div className={'block-playground base16-light'}>
+    <Playground codeText={'${code}'} scope={{}} theme="base16-light" />
 </div>`;
+   } else {
+      return `<pre>${highlightedCode}</pre>`;
+   }
+
 };
 
 const jsxRenderer = (contents, resourcePath, options) => {
